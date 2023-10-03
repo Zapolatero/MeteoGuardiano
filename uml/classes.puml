@@ -1,0 +1,52 @@
+@startuml
+
+interface TemperatureHumidityRepositoryPort {
+  + addTemperatureHumidity(data: TemperatureHumidityData): void
+  + getTemperatureHumidity(): List<TemperatureHumidityData>
+}
+
+class TemperatureHumidityRepositoryAdapter {
+  - repository: TemperatureHumidityRepository
+  + addTemperatureHumidity(data: TemperatureHumidityData): void
+  + getTemperatureHumidity(): List<TemperatureHumidityData>
+}
+
+interface TemperatureHumidityApiPort {
+  + postTemperatureHumidity(data: TemperatureHumidityData): void
+  + getTemperatureHumidity(): List<TemperatureHumidityData>
+}
+
+class TemperatureHumidityApiAdapter {
+  - repository: TemperatureHumidityRepositoryPort
+  + postTemperatureHumidity(data: TemperatureHumidityData): void
+  + getTemperatureHumidity(): List<TemperatureHumidityData>
+}
+
+class TemperatureHumidityController {
+  - api: TemperatureHumidityApiPort
+  + handlePostRequest(data: TemperatureHumidityData): void
+  + handleGetRequest(): List<TemperatureHumidityData>
+}
+
+class MeteoGuardianoApplication {
+  + main(): void
+}
+
+class TemperatureHumidityData {
+  - temperature: double
+  - humidity: double
+  - timestamp: Date
+}
+
+class TemperatureHumidityRepository {
+  - data: List<TemperatureHumidityData>
+}
+
+TemperatureHumidityRepositoryPort ..> TemperatureHumidityRepositoryAdapter
+TemperatureHumidityApiPort ..> TemperatureHumidityApiAdapter
+TemperatureHumidityApiAdapter ..> TemperatureHumidityController
+TemperatureHumidityController ..> MeteoGuardianoApplication
+TemperatureHumidityRepositoryAdapter --> TemperatureHumidityRepository
+TemperatureHumidityApiAdapter --> TemperatureHumidityRepositoryPort
+
+@enduml
