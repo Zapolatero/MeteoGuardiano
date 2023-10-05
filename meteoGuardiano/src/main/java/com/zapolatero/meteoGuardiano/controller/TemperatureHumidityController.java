@@ -14,7 +14,7 @@ public class TemperatureHumidityController {
     private final MongoTemperatureHumidityService mongoTemperatureHumidityService;
 
     @GetMapping("/last")
-    public TemperatureHumidityMeasurement getLastTemperatureHumidity() {
+    public GetLastMeasurementUseCase.GetLastMeasurementResponse getLastTemperatureHumidity() {
         return new GetLastMeasurementUseCase(mongoTemperatureHumidityService).execute();
     }
 

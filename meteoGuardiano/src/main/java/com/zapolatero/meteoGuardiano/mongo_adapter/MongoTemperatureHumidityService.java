@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.zapolatero.meteoGuardiano.mongo_adapter.model.TemperatureHumidityModel;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,5 +25,10 @@ public class MongoTemperatureHumidityService implements TemperatureHumidityServi
     @Override
     public void save(TemperatureHumidityMeasurement measurement) {
         repository.save(TemperatureHumidityModel.fromDomain(measurement));
+    }
+
+    @Override
+    public List<TemperatureHumidityMeasurement> findAllInDateRange(Date start, Date end) {
+        return repository.findAllByDateBetween(start, end).stream().map(TemperatureHumidityModel::toEntity).toList();
     }
 }
